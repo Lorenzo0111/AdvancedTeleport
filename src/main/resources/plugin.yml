@@ -1,0 +1,24 @@
+name: AdvancedTeleport
+version: @version@
+main: me.lorenzo0111.teleport.TeleportPlugin
+api-version: 1.13
+authors: [ Lorenzo0111 ]
+commands:
+  teleport:
+    aliases:
+      - tp
+    permission: advancedteleport.teleport
+  warp:
+    permission: advancedteleport.warp
+  setwarp:
+    aliases:
+      - createwarp
+      - newwarp
+      - warpset
+    permission: advancedteleport.setwarp
+  removewarp:
+    aliases:
+      - deletewarp
+      - delwarp
+      - remwarp
+    permission: advancedteleport.removewarp
