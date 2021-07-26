@@ -46,13 +46,14 @@ public class Updater {
                 if (scanner.hasNext()) {
                     String version = scanner.next();
 
-                    this.updateAvailable = !plugin.getDescription().getVersion().equalsIgnoreCase(version);
                     fetched = true;
+                    this.updateAvailable = !plugin.getDescription().getVersion().equalsIgnoreCase(version);
                     future.complete(updateAvailable);
                     return;
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();
+                fetched = true;
             }
 
             future.complete(false);
