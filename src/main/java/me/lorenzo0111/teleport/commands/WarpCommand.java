@@ -66,6 +66,11 @@ public class WarpCommand implements CommandExecutor, TabExecutor {
             return true;
         }
 
+        if (!player.hasPermission("advancedteleport.teleport.other")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("permission", "")));
+            return true;
+        }
+
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("teleport.warp-other","").replace("%player%", player.getName()).replace("%warp%", warp.getDisplayName())));
         return true;
     }

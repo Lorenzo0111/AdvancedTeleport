@@ -1,5 +1,6 @@
 usage: "&eInvalid usage: &c%usage%"
 player: "&eYou must be a player to execute this command"
+permission: "&cYou do not have the permission to execute this command."
 not-found: "&e%s not found."
 
 teleport:
