@@ -1,6 +1,5 @@
 package me.lorenzo0111.teleport;
 
-import io.papermc.lib.PaperLib;
 import me.lorenzo0111.teleport.cache.ExpiringCache;
 import me.lorenzo0111.teleport.commands.RemoveWarpCommand;
 import me.lorenzo0111.teleport.commands.SetWarpCommand;
@@ -8,7 +7,9 @@ import me.lorenzo0111.teleport.commands.TeleportCommand;
 import me.lorenzo0111.teleport.commands.WarpCommand;
 import me.lorenzo0111.teleport.configuration.PlayerConfiguration;
 import me.lorenzo0111.teleport.configuration.WarpConfiguration;
+import me.lorenzo0111.teleport.listener.JoinListener;
 import me.lorenzo0111.teleport.listener.LeaveListener;
+import me.lorenzo0111.teleport.updater.Updater;
 import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,10 +32,12 @@ public final class TeleportPlugin extends JavaPlugin {
     private ExpiringCache<UUID,PlayerConfiguration> playerCache;
     private Map<String,WarpConfiguration> warps;
 
+    private Updater updater;
+
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        PaperLib.suggestPaper(this);
+        this.updater = new Updater(this, 0, "https://www.spigotmc.org/resources/0/");
 
         this.getLogger().info("Loading files..");
         this.playersFolder = new File(this.getDataFolder(), "players");
@@ -68,6 +71,9 @@ public final class TeleportPlugin extends JavaPlugin {
         this.getCommand("warp").setExecutor(new WarpCommand(this));
         this.getCommand("teleport").setExecutor(new TeleportCommand(this));
         Bukkit.getPluginManager().registerEvents(new LeaveListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new JoinListener(this), this);
+
+        updater.sendUpdateCheck(Bukkit.getConsoleSender());
     }
 
     @Override
@@ -124,5 +130,9 @@ public final class TeleportPlugin extends JavaPlugin {
 
     public File getWarpsFolder() {
         return warpsFolder;
+    }
+
+    public Updater getUpdater() {
+        return updater;
     }
 }
