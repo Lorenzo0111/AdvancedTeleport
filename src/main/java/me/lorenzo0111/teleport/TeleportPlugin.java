@@ -33,6 +33,7 @@ public final class TeleportPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.saveDefaultConfig();
         PaperLib.suggestPaper(this);
 
         this.getLogger().info("Loading files..");

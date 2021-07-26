@@ -28,7 +28,7 @@ public class WarpCommand implements CommandExecutor, TabExecutor {
         if (!sender.hasPermission("advancedteleport.teleport")) return true;
 
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eInvalid usage: &c/warp [player] (warp)"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("usage", "").replace("%usage%", "/warp [player] (warp)")));
             return true;
         }
 
@@ -40,7 +40,7 @@ public class WarpCommand implements CommandExecutor, TabExecutor {
             warpName = args[1];
         } else {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eYou must be a player to execute this command"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("player", "")));
                 return true;
             }
 
@@ -49,24 +49,24 @@ public class WarpCommand implements CommandExecutor, TabExecutor {
         }
 
         if (player == null) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&ePlayer not found."));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(plugin.getConfig().getString("not-found", "&c%s not found."), "Player")));
             return true;
         }
 
         WarpConfiguration warp = plugin.getWarp(warpName);
         if (warp == null) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eWarp not found."));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(plugin.getConfig().getString("not-found", "&c%s not found."), "Warp")));
             return true;
         }
 
         PaperLib.teleportAsync(player,warp.getLocation());
 
         if (sender == player) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&eYou have been teleported to warp %s.", warp.getDisplayName())));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(plugin.getConfig().getString("teleport.warp", "&eYou have been teleported to warp %s."), warp.getDisplayName())));
             return true;
         }
 
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&e%s has been teleported to warp %s.", player.getName(), warp.getDisplayName())));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("teleport.warp-other","").replace("%player%", player.getName()).replace("%warp%", warp.getDisplayName())));
         return true;
     }
 

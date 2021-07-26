@@ -1,0 +1,21 @@
+usage: "&eInvalid usage: &c%usage%"
+player: "&eYou must be a player to execute this command"
+not-found: "&e%s not found."
+
+teleport:
+  warp: "&eYou have been teleported to warp %s."
+  warp-other: "&e%player% has been teleported to warp %warp%."
+  no-last: "&eNo last location has been recorded for that player."
+  tp-other: "&eTeleported %player% to %target% (%status%&e)."
+  tp: "&eTeleported to %target% (%status%&e)."
+
+status:
+  online: "&aOnline"
+  offline: "&cOffline"
+
+warp:
+  remove: "&eWarp removed successfully."
+  error: "&eUnable to delete that warp. Maybe it does not exist?"
+  create-error: "&eAn error has occurred while creating a warp. Maybe it already exists?"
+  display-create: "&eWarp %name% (%display%&e) created successfully."
+  create: "&eWarp %name% created successfully."

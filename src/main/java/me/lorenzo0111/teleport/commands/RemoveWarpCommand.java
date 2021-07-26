@@ -22,16 +22,17 @@ public class RemoveWarpCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eInvalid usage: &c/removewarp (name)"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("usage", "")
+                    .replace("%usage%", "/removewarp (name)")));
             return true;
         }
 
         if (plugin.removeWarp(args[0])) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eWarp removed successfully."));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("warp.remove","&eWarp removed successfully.")));
             return true;
         }
 
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eUnable to delete that warp. Maybe it does not exist?"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("warp.error","&eUnable to delete that warp. Maybe it does not exist?")));
         return true;
     }
 

@@ -26,7 +26,7 @@ public class TeleportCommand implements CommandExecutor {
         if (!sender.hasPermission("advancedteleport.teleport")) return true;
 
         if (args.length <= 0) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eInvalid usage: &c/teleport (player) [target]"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("usage", "").replace("%usage%", "/teleport (player) [target]")));
             return true;
         }
 
@@ -38,7 +38,7 @@ public class TeleportCommand implements CommandExecutor {
             target = Bukkit.getOfflinePlayer(args[1]);
         } else {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eYou must be a player to execute this command"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("player", "")));
                 return true;
             }
 
@@ -47,7 +47,7 @@ public class TeleportCommand implements CommandExecutor {
         }
 
         if (player == null) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eThat player does not exists."));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(plugin.getConfig().getString("not-found", "&e%s not found."), "Player")));
             return true;
         }
 
@@ -65,18 +65,25 @@ public class TeleportCommand implements CommandExecutor {
 
 
         if (targetLocation == null) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eNo last location has been recorded for that player."));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("teleport.no-last", "&eNo last location has been recorded for that player.")));
             return true;
         }
 
         PaperLib.teleportAsync(player,targetLocation);
 
         if (player != sender) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&eTeleported %s to %s (%s&e).", player.getName(), target.getName(), target.isOnline() ? "&aOnline" : "&cOffline")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("teleport.tp-other", "")
+                    .replace("%player%", player.getName())
+                    .replace("%target%", target.getName() == null ? "Unknown" : target.getName())
+                    .replace("%status%", target.isOnline() ? plugin.getConfig().getString("status.online", "&aOnline") : plugin.getConfig().getString("status.offline","&cOffline"))
+            ));
             return true;
         }
 
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&eTeleported to %s (%s&e).", target.getName(), target.isOnline() ? "&aOnline" : "&cOffline" )));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("teleport.tp", "")
+                .replace("%target%", target.getName() == null ? "Unknown" : target.getName())
+                .replace("%status%", target.isOnline() ? plugin.getConfig().getString("status.online", "&aOnline") : plugin.getConfig().getString("status.offline","&cOffline"))
+        ));
         return true;
     }
 

@@ -19,12 +19,13 @@ public class SetWarpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eYou must be a player to execute this command"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("player", "")));
             return true;
         }
 
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eInvalid usage: &c/setwarp (name) [DisplayName]"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("usage", "")
+                .replace("%usage%", "/setwarp (name) [DisplayName]")));
             return true;
         }
 
@@ -38,17 +39,20 @@ public class SetWarpCommand implements CommandExecutor {
         WarpConfiguration config = plugin.createWarp(name, ((Player) sender).getLocation());
 
         if (config == null) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eAn error has occurred while creating a warp. Maybe it already exists?"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("create-error", "")));
             return true;
         }
 
         if (displayName != null) {
             config.setDisplayName(displayName);
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&eWarp %s (%s&e) created successfully.", name, "&7" + displayName)));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("warp.display-create", "&eWarp %name% (%display%&e) created successfully.")
+                .replace("%name%", name)
+                .replace("%display%", displayName)));
             return true;
         }
 
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&eWarp %s created successfully.", name)));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("warp.create", "&eWarp %name% created successfully.")
+                .replace("%name%", name)));
         return true;
     }
 }
