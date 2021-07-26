@@ -37,7 +37,7 @@ public final class TeleportPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        this.updater = new Updater(this, 0, "https://www.spigotmc.org/resources/0/");
+        this.updater = new Updater(this, 94684, "https://www.spigotmc.org/resources/0/");
 
         this.getLogger().info("Loading files..");
         this.playersFolder = new File(this.getDataFolder(), "players");
